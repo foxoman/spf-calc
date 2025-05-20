@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oman SPF Contribution Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #0d4f8b;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .calculator {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        select, input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #0d4f8b;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #083966;
+        }
+        .results {
+            margin-top: 20px;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .total-row {
+            font-weight: bold;
+            background-color: #f8f8f8;
+        }
+        .notes {
+            font-size: 0.9em;
+            margin-top: 20px;
+            color: #555;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+            color: #666;
+            font-size: 0.9em;
+        }
+        .footer a {
+            color: #0d4f8b;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        .heart {
+            color: #e25555;
+        }
+        .toggle-container {
+            display: flex;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .toggle-btn {
+            flex: 1;
+            background-color: #f2f2f2;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 0;
+            transition: background-color 0.3s;
+        }
+        .toggle-btn.active {
+            background-color: #0d4f8b;
+            color: white;
+        }
+        .checkbox-group {
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+        }
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .checkbox-container input {
+            width: auto;
+            margin-right: 10px;
+        }
+        .section-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #0d4f8b;
+        }
+        .date-note {
+            font-size: 0.8em;
+            color: #777;
+            margin-left: 22px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Oman SPF Contribution Calculator</h1>
+    <div class="calculator">
+        <div class="toggle-container">
+            <button class="toggle-btn" id="omaniBtn">Omani Employee</button>
+            <button class="toggle-btn active" id="nonOmaniBtn">Non-Omani Employee</button>
+        </div>
+        
+        <div class="form-group">
+            <label for="totalSalary">Total Salary (OMR):</label>
+            <input type="number" id="totalSalary" min="0" step="0.001" value="1000">
+        </div>
+        
+        <div class="form-group">
+            <label for="basicSalary">Basic Salary (OMR):</label>
+            <input type="number" id="basicSalary" min="0" step="0.001" value="600">
+        </div>
+        
+        <div class="checkbox-group" id="nonOmaniOptions">
+            <div class="section-title">Active Programs</div>
+            <div class="checkbox-container">
+                <input type="checkbox" id="maternityLeave" checked disabled>
+                <label for="maternityLeave">Maternity and Paternity Leave (1%)</label>
+                <span class="date-note">Active since Jul 2024</span>
+            </div>
+            
+            <div class="checkbox-container">
+                <input type="checkbox" id="sickLeave" checked>
+                <label for="sickLeave">Sick Leave and Other Regular Leave (1%)</label>
+                <span class="date-note">Active from Jul 2025</span>
+            </div>
+            
+            <div class="checkbox-container">
+                <input type="checkbox" id="workInjuries" checked>
+                <label for="workInjuries">Work Injuries and Occupational Diseases (1%)</label>
+                <span class="date-note">Active from Jul 2026</span>
+            </div>
+            
+            <div class="checkbox-container">
+                <input type="checkbox" id="savingsProgram" checked>
+                <label for="savingsProgram">Savings Program - EOS (9% of Basic Salary)</label>
+                <span class="date-note">Active from Jul 2026</span>
+            </div>
+        </div>
+        
+        <div class="checkbox-group" id="omaniOptions" style="display: none;">
+            <div class="section-title">Active Programs (All active since Jan 2024)</div>
+            <div class="checkbox-container">
+                <input type="checkbox" id="omaniSeniorCitizens" checked disabled>
+                <label for="omaniSeniorCitizens">Senior Citizens, Disability, and Death</label>
+            </div>
+            
+            <div class="checkbox-container">
+                <input type="checkbox" id="omaniWorkInjuries" checked disabled>
+                <label for="omaniWorkInjuries">Work Injuries and Occupational Diseases</label>
+            </div>
+            
+            <div class="checkbox-container">
+                <input type="checkbox" id="omaniEmploymentSecurity" checked disabled>
+                <label for="omaniEmploymentSecurity">Employment Security</label>
+            </div>
+            
+            <div class="checkbox-container">
+                <input type="checkbox" id="omaniMaternityLeave" checked disabled>
+                <label for="omaniMaternityLeave">Maternity and Paternity Leave</label>
+            </div>
+            
+            <div class="checkbox-container">
+                <input type="checkbox" id="omaniSickLeave" checked disabled>
+                <label for="omaniSickLeave">Sick Leave and Other Regular Leave</label>
+            </div>
+        </div>
+        
+        <button id="calculateBtn">Calculate Contributions</button>
+        
+        <div class="results" id="resultsContainer">
+            <h2>SPF Contribution Results</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Program/Category</th>
+                        <th>Employee Contribution</th>
+                        <th>Employer Contribution</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsTable">
+                    <!-- Results will be inserted here -->
+                </tbody>
+            </table>
+            
+            <div class="notes">
+                <p><strong>Note:</strong> Calculations are based on the SPF contribution rates as of May 2025.</p>
+                <p>- Senior Citizens, Disability, and Death: Capped at OMR 3,000</p>
+                <p>- Work Injuries and Occupational Diseases: Capped at OMR 3,000</p>
+                <p>- Savings Program (EOS): Based on basic salary (9%)</p>
+                <p>- For Non-Omani employees, you can toggle which programs are active based on implementation dates</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        Created with <span class="heart">♥</span> by Sultan Al-Isaiee, <a href="https://x.com/foxoman" target="_blank">@foxoman</a> &copy; 2025
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const omaniBtn = document.getElementById('omaniBtn');
+            const nonOmaniBtn = document.getElementById('nonOmaniBtn');
+            const calculateBtn = document.getElementById('calculateBtn');
+            const totalSalaryInput = document.getElementById('totalSalary');
+            const basicSalaryInput = document.getElementById('basicSalary');
+            
+            // Checkboxes
+            const sickLeaveCheckbox = document.getElementById('sickLeave');
+            const workInjuriesCheckbox = document.getElementById('workInjuries');
+            const savingsProgramCheckbox = document.getElementById('savingsProgram');
+            
+            // Option containers
+            const omaniOptions = document.getElementById('omaniOptions');
+            const nonOmaniOptions = document.getElementById('nonOmaniOptions');
+            
+            const resultsTable = document.getElementById('resultsTable');
+            
+            let isOmani = false; // Default to non-Omani
+            
+            omaniBtn.addEventListener('click', function() {
+                isOmani = true;
+                omaniBtn.classList.add('active');
+                nonOmaniBtn.classList.remove('active');
+                omaniOptions.style.display = 'block';
+                nonOmaniOptions.style.display = 'none';
+                calculateContributions();
+            });
+            
+            nonOmaniBtn.addEventListener('click', function() {
+                isOmani = false;
+                nonOmaniBtn.classList.add('active');
+                omaniBtn.classList.remove('active');
+                nonOmaniOptions.style.display = 'block';
+                omaniOptions.style.display = 'none';
+                calculateContributions();
+            });
+            
+            calculateBtn.addEventListener('click', calculateContributions);
+            sickLeaveCheckbox.addEventListener('change', calculateContributions);
+            workInjuriesCheckbox.addEventListener('change', calculateContributions);
+            savingsProgramCheckbox.addEventListener('change', calculateContributions);
+            
+            function calculateContributions() {
+                const totalSalary = parseFloat(totalSalaryInput.value) || 0;
+                const basicSalary = parseFloat(basicSalaryInput.value) || 0;
+                
+                // Cap for certain programs
+                const cappedSalary = Math.min(totalSalary, 3000);
+                
+                let contributions = [];
+                
+                if (isOmani) {
+                    // Omani employee contributions
+                    contributions = [
+                        {
+                            name: "Senior Citizens, Disability, and Death",
+                            employee: cappedSalary * 0.075,
+                            employer: cappedSalary * 0.11
+                        },
+                        {
+                            name: "Work Injuries and Occupational Diseases",
+                            employee: 0,
+                            employer: cappedSalary * 0.01
+                        },
+                        {
+                            name: "Employment Security",
+                            employee: totalSalary * 0.005,
+                            employer: totalSalary * 0.005
+                        },
+                        {
+                            name: "Maternity and Paternity Leave",
+                            employee: 0,
+                            employer: totalSalary * 0.01
+                        },
+                        {
+                            name: "Sick Leave and Other Regular Leave",
+                            employee: 0,
+                            employer: totalSalary * 0.01
+                        }
+                    ];
+                } else {
+                    // Non-Omani employee contributions
+                    contributions = [
+                        {
+                            name: "Maternity and Paternity Leave",
+                            employee: 0,
+                            employer: totalSalary * 0.01,
+                            active: true // Always active since July 2024
+                        }
+                    ];
+                    
+                    // Add conditional contributions based on checkbox states
+                    if (sickLeaveCheckbox.checked) {
+                        contributions.push({
+                            name: "Sick Leave and Other Regular Leave",
+                            employee: 0,
+                            employer: totalSalary * 0.01,
+                            note: "(From Jul 2025)"
+                        });
+                    }
+                    
+                    if (workInjuriesCheckbox.checked) {
+                        contributions.push({
+                            name: "Work Injuries and Occupational Diseases",
+                            employee: 0,
+                            employer: cappedSalary * 0.01,
+                            note: "(From Jul 2026)"
+                        });
+                    }
+                    
+                    if (savingsProgramCheckbox.checked) {
+                        contributions.push({
+                            name: "Savings Program - EOS (Optional)",
+                            employee: 0,
+                            employer: basicSalary * 0.09,
+                            note: "(From Jul 2026)"
+                        });
+                    }
+                }
+                
+                // Calculate totals
+                let totalEmployeeContribution = 0;
+                let totalEmployerContribution = 0;
+                
+                contributions.forEach(item => {
+                    totalEmployeeContribution += item.employee;
+                    totalEmployerContribution += item.employer;
+                });
+                
+                // Display results
+                let html = '';
+                
+                contributions.forEach(item => {
+                    let nameDisplay = item.name;
+                    if (item.note) {
+                        nameDisplay += ` <span style="color:#777;font-size:0.85em;">${item.note}</span>`;
+                    }
+                    
+                    html += `
+                        <tr>
+                            <td>${nameDisplay}</td>
+                            <td>${item.employee.toFixed(3)} OMR</td>
+                            <td>${item.employer.toFixed(3)} OMR</td>
+                            <td>${(item.employee + item.employer).toFixed(3)} OMR</td>
+                        </tr>
+                    `;
+                });
+                
+                html += `
+                    <tr class="total-row">
+                        <td>Total Contributions</td>
+                        <td>${totalEmployeeContribution.toFixed(3)} OMR</td>
+                        <td>${totalEmployerContribution.toFixed(3)} OMR</td>
+                        <td>${(totalEmployeeContribution + totalEmployerContribution).toFixed(3)} OMR</td>
+                    </tr>
+                    <tr>
+                        <td>As Percentage of Total Salary</td>
+                        <td>${(totalEmployeeContribution / totalSalary * 100).toFixed(2)}%</td>
+                        <td>${(totalEmployerContribution / totalSalary * 100).toFixed(2)}%</td>
+                        <td>${((totalEmployeeContribution + totalEmployerContribution) / totalSalary * 100).toFixed(2)}%</td>
+                    </tr>
+                `;
+                
+                resultsTable.innerHTML = html;
+            }
+            
+            // Calculate default values on page load
+            calculateContributions();
+        });
+    </script>
+</body>
+</html>
